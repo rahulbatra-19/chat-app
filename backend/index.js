@@ -1,6 +1,6 @@
 const express = require("express"); //calls our http server
 const cors = require("cors"); //to call this server from any other origin
-
+const axios = require("axios");
 const app = express();
 app.use(express.json());
 app.use(
@@ -11,9 +11,12 @@ app.use(
 
 app.post("/authenticate", async (req, res) => {
   const { username } = req.body;
+  //   const username = "Rahul";
+  console.log(username);
   try {
-    const response = await axios.put(
+    const r = await axios.put(
       "https://api.chatengine.io/users/",
+
       {
         username: username,
         secret: username,
@@ -24,8 +27,9 @@ app.post("/authenticate", async (req, res) => {
       }
     );
     return res.status(r.status).json(r.data);
-  } catch (error) {
-    return res.status(error.response.status).json(error.response.data);
+  } catch (e) {
+    return res.status(e.response.status).json(e.response.data);
+    // return res.status(200).json({ error: "Authentication failed", e });
   }
 });
 
